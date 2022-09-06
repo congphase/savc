@@ -20,7 +20,7 @@ public class ProductController {
 
     // List
     @GetMapping
-    public List<Product> getProductCategoryTree() {
+    public List<ProductCategory> getProductCategoryTree() {
         return productService.getProductCategoryTree();
     }
 }
