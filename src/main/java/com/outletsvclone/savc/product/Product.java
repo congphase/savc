@@ -11,7 +11,7 @@ public class Product {
     private int depth;
     private String description;
     private String imageUrl;
-    private Long visualIndex;
+    private String visualIndex;
     private String tenantId;
     private int version;
     private String createdDate;
@@ -31,7 +31,7 @@ public class Product {
                    int depth,
                    String description,
                    String imageUrl,
-                   Long visualIndex,
+                   String visualIndex,
                    String tenantId,
                    int version,
                    String createdDate,
@@ -61,7 +61,7 @@ public class Product {
                    int depth,
                    String description,
                    String imageUrl,
-                   Long visualIndex,
+                   String visualIndex,
                    String tenantId,
                    int version,
                    String createdDate,
@@ -112,7 +112,7 @@ public class Product {
         return imageUrl;
     }
 
-    public Long getVisualIndex() {
+    public String getVisualIndex() {
         return visualIndex;
     }
 
