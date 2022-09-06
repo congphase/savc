@@ -17,35 +17,4 @@ public class SavcApplication {
         SpringApplication.run(SavcApplication.class, args);
     }
 
-//    // String
-//    @GetMapping
-//    public String productCategoryTree() {
-//        return "Mock product categories";
-//    }
-
-    // List
-    @GetMapping
-    public List<Product> productCategoryTree() {
-        List<Product> result = new ArrayList<Product>();
-
-        Product mockProduct = new Product(1L,
-                "B_DLANH",
-                "Ngành Hàng Đông Lạnh",
-                "",
-                1,
-                "Ngành Hàng Đông Lạnh",
-                "",
-                "",
-                "CLMX",
-                1,
-                "2022-01-01 00:00:00.000",
-                "SUPPER_ADMIN",
-                "",
-                ""
-                );
-
-        result.add(mockProduct);
-
-        return result;
-    }
 }
