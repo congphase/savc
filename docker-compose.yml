@@ -1,0 +1,20 @@
+mariadb:
+  image: mariadb:10.6.4
+  container_name: mariadb123
+  restart: always
+  environment:
+    MARIADB_ROOT_PASSWORD: mradbrpw
+    MARIADB_DATABASE: mradbdtb
+    MARIADB_USER: phalc
+    MARIADB_PASSWORD: mradbpw
+  ports:
+    - '3307:3307'
+  volumes:
+    - /home/phalc/VTS/db/mariadb:/var/lib/mysql
+#  networks:
+#    - dsp
+#
+#networks:
+#  dsp:
+#    name: dsp_network
+#    driver: bridge
