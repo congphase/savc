@@ -2,6 +2,7 @@ package com.outletsvclone.savc.product;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.json.simple.JSONObject;
 
 import java.util.List;
 
@@ -20,17 +21,23 @@ public class ProductCategoryService {
         return productRepository.findAll();
     }
 
-    public List<ProductCategory> getProductCategoryTree() {
-        return productRepository.findAll();
+    public JSONObject getProductCategoryTree() {
+        List<String> interestedParentIds = productRepository.findAllByDepthEquals(1);
+
+        JSONObject hierarchicalProds = new JSONObject();
+
+        for(int i=0; i<interestedParentIds.size(); i++) {
+            String parent = interestedParentIds.get(i);
+            List<ProductCategory> childs = productRepository.findAllByParentCatId(parent);
+
+            hierarchicalProds.put(parent, childs);
+        }
+        return hierarchicalProds;
     }
 
-//    public List<ProductCategory> getProductCategoryTree() {
-//        List<ProductCategory> result = new ArrayList<>();
-//
-//        ProductCategory mockProduct = new ProductCategory();
-//
-//        result.add(mockProduct);
-//
-//        return result;
-//    }
+    public List<String> mockService() {
+
+        return productRepository.findAllByDepthEquals(1);
+    }
+
 }
