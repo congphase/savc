@@ -11,7 +11,8 @@ import java.util.List;
 @Transactional
 public class ProductCategoryService {
 
-    private final ProductCategoryRepository productRepository;
+    @Autowired
+    private ProductCategoryRepository productRepository;
 
     @Autowired
     public ProductCategoryService(ProductCategoryRepository productRepository) {
