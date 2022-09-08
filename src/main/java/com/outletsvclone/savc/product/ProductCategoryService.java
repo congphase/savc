@@ -4,9 +4,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.json.simple.JSONObject;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Service // telling that this class is instantiated (it is a Spring bean)
+@Transactional
 public class ProductCategoryService {
 
     private final ProductCategoryRepository productRepository;
@@ -33,6 +35,16 @@ public class ProductCategoryService {
             hierarchicalProds.put(parent, childs);
         }
         return hierarchicalProds;
+    }
+
+    public void addNewProductCategory(ProductCategory productCategory) {
+        ProductCategory productCategoryByName =  productRepository.findProductCategoryByName(productCategory.getName());
+
+        if(productCategoryByName != null) {
+            throw new IllegalStateException("Product category exists (name)");
+        }
+
+        productRepository.saveAndFlush(productCategory);
     }
 
     public List<String> mockService() {
