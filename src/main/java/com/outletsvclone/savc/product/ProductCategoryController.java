@@ -2,10 +2,8 @@ package com.outletsvclone.savc.product;
 
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -32,15 +30,25 @@ public class ProductCategoryController {
     }
 
     @PostMapping(value = "api/add-prod-cat")
-    public String addProductCategory(@RequestBody ProductCategory productCategory) {
+    public ResponseEntity addProductCategory(@RequestBody ProductCategory productCategory) {
         productCategoryService.addNewProductCategory(productCategory);
 
-        return "SUCCESS";
+        return ResponseEntity.ok("CREATION SUCCESS!");
+    } //// Consider changing return type from String to
+
+    @DeleteMapping(path = "api/prods/{prodCatId}")
+    public ResponseEntity deleteProductCategory(@PathVariable String prodCatId) {
+        productCategoryService.deleteProductCategory(prodCatId);
+
+        return ResponseEntity.ok("DELETE SUCCESS!");
     }
 
-    @GetMapping("api/mock-service")
-    public List<String> testMockService() {
-        return productCategoryService.mockService();
-    }
+    @PutMapping(path = "api/prods")
+    public ResponseEntity updateProductCategory(@RequestBody ProductCategory productCategory) {
 
+        if(productCategoryService.updateProductCategory(productCategory)) {
+            return ResponseEntity.ok("UPDATE SUCCESS FOR ID " + productCategory.getId());
+        }
+        return ResponseEntity.ok("UPDATE FAILED FOR ID " + productCategory.getId());
+    }
 }
