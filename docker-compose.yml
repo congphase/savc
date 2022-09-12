@@ -11,10 +11,3 @@ mariadb:
     - '3307:3307'
   volumes:
     - /home/phalc/VTS/db/mariadb:/var/lib/mysql
-#  networks:
-#    - dsp
-#
-#networks:
-#  dsp:
-#    name: dsp_network
-#    driver: bridge

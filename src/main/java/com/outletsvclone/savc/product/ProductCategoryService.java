@@ -41,10 +41,14 @@ public class ProductCategoryService {
     }
 
     public void addNewProductCategory(ProductCategory productCategory) {
-        ProductCategory productCategoryByName = productRepository.findProductCategoryByName(productCategory.getName());
+        ProductCategory productCategoryByCodeAndNameAndParentCatId =
+                productRepository.findProductCategoryByCodeAndNameAndParentCatId(
+                    productCategory.getCode(),
+                    productCategory.getName(),
+                    productCategory.getParentCatId());
 
-        if (productCategoryByName != null) {
-            throw new IllegalStateException("Product category exists (name)");
+        if (productCategoryByCodeAndNameAndParentCatId != null) {
+            throw new IllegalStateException("Product category exists");
         }
 
         productRepository.saveAndFlush(productCategory);
