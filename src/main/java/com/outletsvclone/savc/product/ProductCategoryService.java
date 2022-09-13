@@ -3,8 +3,6 @@ package com.outletsvclone.savc.product;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.json.simple.JSONObject;
-import org.springframework.web.bind.annotation.PutMapping;
-
 import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
@@ -21,9 +19,15 @@ public class ProductCategoryService {
         this.productRepository = productRepository;
     }
 
-    //// Intended for testing database only
     public List<ProductCategory> getProductCategoryAll() {
         return productRepository.findAll();
+    }
+
+    public List<ProductCategory> getProductCategoryByCondition(String code, String name, String parentCodeId) {
+        List<ProductCategory> result;
+        result = productRepository.findProductCategoryByCondition(code, name, parentCodeId);
+
+        return result;
     }
 
     public JSONObject getProductCategoryTree() {
@@ -40,31 +44,33 @@ public class ProductCategoryService {
         return hierarchicalProds;
     }
 
-    public void addNewProductCategory(ProductCategory productCategory) {
-        ProductCategory productCategoryByCodeAndNameAndParentCatId =
-                productRepository.findProductCategoryByCodeAndNameAndParentCatId(
-                    productCategory.getCode(),
-                    productCategory.getName(),
-                    productCategory.getParentCatId());
+    public String addNewProductCategory(ProductCategory productCategory) {
+        List<ProductCategory> productCategoryList = productRepository.findProductCategoryByCondition(
+                productCategory.getCode(),
+                productCategory.getName(),
+                productCategory.getParentCatId());
 
-        if (productCategoryByCodeAndNameAndParentCatId != null) {
-            throw new IllegalStateException("Product category exists");
+        if(0 < productCategoryList.size()) {
+            return "Product category exists";
         }
 
         productRepository.saveAndFlush(productCategory);
+        return "CREATION SUCCESS!";
     }
 
-    public void deleteProductCategory(String prodCatId) {
+    public String deleteProductCategory(String prodCatId) {
         boolean exists = productRepository.existsById(prodCatId);
 
         if (!exists) {
-            throw new IllegalStateException("Product category does not exist to delete");
+            throw new IllegalStateException("PRODUCT CATEGORY DOES NOT EXIST TO DELETE!");
         }
 
         productRepository.deleteById(prodCatId);
+
+        return "DELETION SUCCESS!";
     }
 
-    public boolean updateProductCategory(ProductCategory productCategory) {
+    public String updateProductCategory(ProductCategory productCategory) {
         Optional<ProductCategory> existingProCat = productRepository.findById(productCategory.getId());
 
         if (existingProCat.isPresent()) {
@@ -86,10 +92,10 @@ public class ProductCategoryService {
 
             productRepository.saveAndFlush(toBeUpdated);
 
-            return true;
+            return ("UPDATE SUCCESS FOR " + toBeUpdated.getId());
         }
         else {
-            throw new IllegalStateException("Product category does not exist to update");
+            return "PRODUCT CATEGORY DOES NOT EXIST TO UPDATE!";
         }
     }
 }
